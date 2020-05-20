@@ -16,7 +16,7 @@ const fs = require('fs-extra')
 const aioLogger = require('@adobe/aio-lib-core-logging')('@adobe/aio-cli-plugin-app:init', { provider: 'debug' })
 const { flags } = require('@oclif/command')
 const { validateConfig, importConfigJson, loadConfigFile, writeAio } = require('../../lib/import')
-const { getCliInfo } = require('../../lib/app-helper')
+const { getCliInfo, gitIgnoreFile } = require('../../lib/app-helper')
 const chalk = require('chalk')
 
 class InitCommand extends BaseCommand {
@@ -50,6 +50,8 @@ class InitCommand extends BaseCommand {
         })
         // trigger import
         flags.import = generatedFile
+        // .gitignore generated file
+        await gitIgnoreFile(generatedFile)
       } catch (e) {
         this.log(chalk.red(e.message))
       }

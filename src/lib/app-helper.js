@@ -83,11 +83,22 @@ async function getCliInfo () {
   return { accessToken, env }
 }
 
+/** @private */
+async function gitIgnoreFile (ignoreThisFile, gitIgnoreFilePath = process.cwd()) {
+  // TODO:
+  // resolve the .gitignore file path, create if it does not exist
+  // read contents of .gitignore file
+  // put all lines in a Set
+  // set the fileToIgnore into the Set
+  // write the Set back to disk
+}
+
 module.exports = {
   isNpmInstalled,
   isGitInstalled,
   installPackage,
   runPackageScript,
   wrapError,
-  getCliInfo
+  getCliInfo,
+  gitIgnoreFile
 }

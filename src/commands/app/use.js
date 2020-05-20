@@ -16,7 +16,7 @@ const inquirer = require('inquirer')
 const config = require('@adobe/aio-lib-core-config')
 const { EOL } = require('os')
 const yeoman = require('yeoman-environment')
-const { getCliInfo } = require('../../lib/app-helper')
+const { getCliInfo, gitIgnoreFile } = require('../../lib/app-helper')
 
 class Use extends BaseCommand {
   async consoleConfigString (consoleConfig) {
@@ -58,6 +58,8 @@ class Use extends BaseCommand {
           'project-id': project.id,
           'workspace-id': workspace.id
         })
+        // .gitignore generated file
+        await gitIgnoreFile(generatedFile)
 
         return this.importConfigFile(generatedFile, flags)
       }
