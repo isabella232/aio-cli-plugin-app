@@ -84,13 +84,27 @@ async function getCliInfo () {
 }
 
 /** @private */
-async function gitIgnoreFile (ignoreThisFile, gitIgnoreFilePath = process.cwd()) {
-  // TODO:
-  // resolve the .gitignore file path, create if it does not exist
-  // read contents of .gitignore file
-  // put all lines in a Set
-  // set the fileToIgnore into the Set
-  // write the Set back to disk
+async function gitIgnoreFile (fileToIgnore, gitIgnoreFilePath = process.cwd()) {
+  debug(`gitIgnoreFile: fileToIgnore: ${fileToIgnore} gitIgnoreFilePath: ${gitIgnoreFilePath}`)
+
+  if (!fileToIgnore) {
+    throw new Error('gitIgnoreFile: ignore file not specified.')
+  }
+
+  let setCollection = new Set()
+  const filePath = path.resolve(path.join(gitIgnoreFilePath, '.gitignore'))
+
+  if (fs.existsSync(filePath)) {
+    const contents = await fs.readFile(filePath, 'utf-8')
+    const NEWLINES = /\n|\r|\r\n/
+    setCollection = new Set(contents.split(NEWLINES))
+  }
+
+  setCollection.add(fileToIgnore)
+  const data = [...setCollection].join('\n')
+
+  // write to disk
+  return fs.writeFile(filePath, data, { flag: 'w' })
 }
 
 module.exports = {
